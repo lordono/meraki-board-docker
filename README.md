@@ -90,6 +90,14 @@ git clone https://github.com/jseow-c/meraki-board
 cd meraki-board
 ```
 
+### Setting up environment variables
+There are a number of setting files that is not in the git due to security reasons. Examples are given to guide you through each one. 
+We will be going through each of them here too.
+
+For each .env file, there is an existing .env.example file in the appropriate folder. 
+
+Eg. Under the root folder, you will see a .env.example. You will need to copy this file and fill in appropriate details to form a .env file.
+
 ### Create Logstash Configurations
 We need to get the configurations for Logstash ingestion. We will be using HTTP module in Logstash heavily. To this end, we have created some Python scripts that do that. More information can be found in the scripts themselves.
 
@@ -169,6 +177,29 @@ Get Meraki Netflow URL
 ```bash
 curl --noproxy "*" http://localhost:4041/api/tunnels | jq '.tunnels[].public_url'
 ```
+
+#### Put URL into respective settings in Meraki Dashboard
+For Netflow, 
+1)We need to login to [Meraki Dashboard](https://n185.meraki.com)
+2)Select the appropriate organization and network
+3)Go to Network-wide > General > Netflow
+4)Fill in the collector IP according to the URL given earlier
+5)Fill in the port as 443
+6)Save the settings
+7)Repeat these steps for all the networks that you wish to monitor
+
+For Webhook,
+1)We need to login to [Meraki Dashboard](https://n185.meraki.com)
+2)Select the appropriate organization and network
+3)Go to Network-wide > Alerts
+4)Under `Webhooks`, click on `Add an HTTP server`.
+5)Fill in the URL according to the Webhook URL given earlier
+6)Fill in the password as per the environment file earlier
+7)Click on `Send test webhook` to see if it succeed.
+8)Under `Alert Settings` above, now add the newly created Webhook into the `Default recipents`
+9)Save the settings
+10)Repeat these steps for all the networks that you wish to monitor
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
