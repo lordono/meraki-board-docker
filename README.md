@@ -180,25 +180,25 @@ curl --noproxy "*" http://localhost:4041/api/tunnels | jq '.tunnels[].public_url
 
 #### Put URL into respective settings in Meraki Dashboard
 For Netflow, 
-1)We need to login to [Meraki Dashboard](https://n185.meraki.com)
-2)Select the appropriate organization and network
-3)Go to Network-wide > General > Netflow
-4)Fill in the collector IP according to the URL given earlier
-5)Fill in the port as 443
-6)Save the settings
-7)Repeat these steps for all the networks that you wish to monitor
+1) We need to login to [Meraki Dashboard](https://n185.meraki.com)
+2) Select the appropriate organization and network
+3) Go to Network-wide > General > Netflow
+4) Fill in the collector IP according to the URL given earlier
+5) Fill in the port as 443
+6) Save the settings
+7) Repeat these steps for all the networks that you wish to monitor
 
 For Webhook,
-1)We need to login to [Meraki Dashboard](https://n185.meraki.com)
-2)Select the appropriate organization and network
-3)Go to Network-wide > Alerts
-4)Under `Webhooks`, click on `Add an HTTP server`.
-5)Fill in the URL according to the Webhook URL given earlier
-6)Fill in the password as per the environment file earlier
-7)Click on `Send test webhook` to see if it succeed.
-8)Under `Alert Settings` above, now add the newly created Webhook into the `Default recipents`
-9)Save the settings
-10)Repeat these steps for all the networks that you wish to monitor
+1) We need to login to [Meraki Dashboard](https://n185.meraki.com)
+2) Select the appropriate organization and network
+3) Go to Network-wide > Alerts
+4) Under `Webhooks`, click on `Add an HTTP server`.
+5) Fill in the URL according to the Webhook URL given earlier
+6) Fill in the password as per the environment file earlier
+7) Click on `Send test webhook` to see if it succeed.
+8) Under `Alert Settings` above, now add the newly created Webhook into the `Default recipents`
+9) Save the settings
+10) Repeat these steps for all the networks that you wish to monitor
 
 
 ## Contributing
