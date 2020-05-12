@@ -1,0 +1,164 @@
+version: '2.2'
+services:
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - 9200:9200
+    networks:
+      - elastic
+    healthcheck:
+      test: if (( $$(curl -Is http://localhost:9200 | head -n 1 | cut '-d ' '-f2') == 200 )); then echo 0; else echo 1; fi
+      interval: 30s
+      timeout: 20s
+      retries: 5
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
+    container_name: es02
+    environment:
+      - node.name=es02
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data02:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - 9201:9201
+    networks:
+      - elastic
+
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
+    container_name: es03
+    environment:
+      - node.name=es03
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data03:/usr/share/elasticsearch/data
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    ports:
+      - 9202:9202
+    networks:
+      - elastic
+
+  kib01:
+    image: docker.elastic.co/kibana/kibana:${VERSION}
+    depends_on: {"es01": {"condition": "service_healthy"}}
+    container_name: kib01
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://es01:9200
+      ELASTICSEARCH_HOSTS: http://es01:9200
+    networks:
+      - elastic
+
+  logs01:
+    image: docker.elastic.co/logstash/logstash:${VERSION}
+    depends_on: {"es01": {"condition": "service_healthy"}}
+    container_name: logs01
+    volumes:
+      - config:/usr/share/logstash/pipeline
+    ports:
+      - 5044:5044
+      - 62101:62101
+    environment:
+      XPACK_SECURITY_ENABLED: "false"
+      XPACK_REPORTING_ENABLED: "false"
+      XPACK_MONITORING_ENABLED: "false"
+      ELASTIC_HOST: http://es01:9200
+      WEBHOOK_PASSWORD: ${WEBHOOK_PASSWORD}
+    networks:
+      - elastic
+
+  fib01:
+    image: docker.elastic.co/beats/filebeat:${VERSION}
+    depends_on: [ logs01 ]
+    container_name: fib01
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+    ports:
+      - 2055:2055
+    environment:
+      LS_HOSTS: http://logs01:5044
+    networks:
+      - elastic
+
+  ngrok01:
+    image: meraki-board/ngrok
+    depends_on: [ fib01 ]
+    container_name: ngrok01
+    ports:
+      - 4040:4040
+    environment:
+      NGROK_PORT: http://fib01:2055
+    env_file:
+      - ./ngrok-env/netflow.env
+    networks:
+      - elastic
+
+  ngrok02:
+    image: meraki-board/ngrok
+    depends_on: [ logs01 ]
+    container_name: ngrok02
+    ports:
+      - 4041:4040
+    environment:
+      NGROK_PORT: http://logs01:62101
+    env_file:
+      - ./ngrok-env/webhook.env
+    networks:
+      - elastic
+
+  ui01:
+    image: meraki-board/ui
+    depends_on: [ ngrok01, ngrok02 ]
+    container_name: ui01
+    ports:
+      - 1337:80
+    networks:
+      - elastic
+
+volumes:
+  data01:
+    driver: local
+  data02:
+    driver: local
+  data03:
+    driver: local
+  config:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge

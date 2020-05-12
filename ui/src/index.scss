@@ -1,0 +1,486 @@
+html,
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #161719;
+  color: #d8d9da;
+  height: calc(100vh - 100px);
+  width: calc(100vw - 20px);
+
+  // scrollbar
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 10px rgba(255, 255, 255, 0);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(160, 160, 160, 0.2);
+    -webkit-box-shadow: inset 0 0 10px rgba(250, 250, 250, 1);
+  }
+  ::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(160, 160, 160, 0.4);
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+#root {
+  height: 100%;
+}
+
+.main-container {
+  height: 100%;
+}
+
+// colors
+$color-red: #880000;
+$color-red-light: rgba(250, 220, 220, 1);
+$color-white: #fff;
+$color-blue: #597;
+$color-blue-light: rgba(240, 250, 240, 1);
+
+// date-container
+.date-container {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  height: 42px;
+  margin: 20px;
+  .btn-update {
+    height: 42px;
+    margin-left: 15px;
+    padding: 0 25px;
+    border: none;
+    outline: none;
+    background-color: #3d3d3d;
+    color: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: #4d4d4d;
+    }
+  }
+  .calendar-icon {
+    background-color: #fafafa;
+    color: #000;
+    padding: 0 15px;
+    height: calc(100% - 3px);
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-bottom: 3px solid lighten($color-blue, 5%);
+    transition: border-bottom 0.2s;
+  }
+  .arrow-icon {
+    background-color: #fafafa;
+    color: #000;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    height: calc(100% - 3px);
+    border-bottom: 3px solid lighten($color-blue, 5%);
+    transition: border-bottom 0.2s;
+  }
+}
+
+// wrong-input
+.date-container.incorrect {
+  .btn-update {
+    background-color: #8d8d8d;
+    cursor: not-allowed;
+  }
+  .calendar-icon {
+    border-bottom: 3px solid lighten($color-red, 5%);
+  }
+  .arrow-icon {
+    border-bottom: 3px solid lighten($color-red, 5%);
+  }
+  .react-datepicker-wrapper {
+    .react-datepicker__input-container {
+      input {
+        color: $color-red;
+        background-color: $color-red-light;
+        border-bottom: 3px solid lighten($color-red, 5%);
+      }
+    }
+  }
+}
+
+// react-date-picker
+
+.react-datepicker-wrapper {
+  height: 100%;
+  .react-datepicker__input-container {
+    margin: 0;
+    height: 100%;
+    input {
+      font-size: 1rem;
+      padding: 10px;
+      width: 220px;
+      height: calc(100% - 23px);
+      text-align: center;
+      background-color: $color-blue-light;
+      border: 0;
+      border-bottom: 3px solid lighten($color-blue, 5%);
+      color: $color-blue;
+      outline: none;
+      cursor: pointer;
+      transition: border-bottom 0.2s;
+      transition: color 0.2s;
+      transition: background-color 0.2s;
+    }
+  }
+}
+.react-datepicker {
+  height: 280px;
+  .react-datepicker__triangle {
+    transform: translateX(90px);
+  }
+  .react-datepicker__navigation.react-datepicker__navigation--previous {
+    top: 22.5px;
+    left: 20px;
+  }
+  .react-datepicker__navigation.react-datepicker__navigation--next.react-datepicker__navigation--next--with-time {
+    top: 22.5px;
+    right: 100px;
+  }
+  .react-datepicker__month-container {
+    .react-datepicker__header {
+      border: 0;
+      background-color: darken($color-white, 1%);
+      padding: 20px 0 10px;
+      .react-datepicker__current-month {
+        font-size: 20px;
+        font-weight: 400;
+      }
+      .react-datepicker__day-names {
+        .react-datepicker__day-name {
+          text-transform: uppercase;
+          color: darken($color-white, 35%);
+        }
+      }
+    }
+    .react-datepicker__month {
+      margin: 1rem;
+
+      .react-datepicker__week {
+        .react-datepicker__day {
+          transition: font-weight 0.2s;
+          transition: background-color 0.2s;
+          &:hover {
+            transform: scale(1.2);
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+  .react-datepicker__time-container {
+    border: 0;
+    padding: 20px 5px;
+    height: calc(100% - 40px);
+    .react-datepicker__header.react-datepicker__header--time {
+      display: none;
+    }
+    .react-datepicker__time {
+      height: 100%;
+      .react-datepicker__time-box {
+        height: 100%;
+        .react-datepicker__time-list {
+          max-height: 100%;
+          .react-datepicker__time-list-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: darken($color-white, 45%);
+            height: 20px;
+            padding: 5px 15px;
+            &:hover {
+              text-decoration: underline;
+            }
+            &.react-datepicker__time-list-item--selected {
+              color: $color-white;
+            }
+          }
+        }
+      }
+    }
+
+    // scrollbar
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 10px rgba(255, 255, 255, 1);
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      background: rgba(160, 160, 160, 0.8);
+      -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    ::-webkit-scrollbar-thumb:window-inactive {
+      background: rgba(160, 160, 160, 0.4);
+    }
+  }
+}
+
+// drawer
+.drawer-menu {
+  position: fixed;
+  z-index: 99;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  transform: none;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: grid;
+  grid-template-areas:
+    "overlay-top overlay-top overlay-top"
+    "overlay-left menu overlay-right";
+  grid-template-columns: 5fr 15fr 5fr;
+  grid-template-rows: 5fr 15fr;
+
+  @media (--small) {
+    grid-template-columns: 2fr 10fr;
+  }
+
+  &.hide {
+    transform: translateY(100%);
+
+    .drawer-content {
+      opacity: 0;
+      transition-delay: 300ms;
+    }
+  }
+  .overlay-top {
+    grid-area: overlay-top;
+    opacity: 0;
+  }
+  .overlay-left {
+    grid-area: overlay-left;
+    opacity: 0;
+  }
+  .overlay-right {
+    grid-area: overlay-right;
+    opacity: 0;
+  }
+
+  .drawer-content {
+    display: block;
+    flex-flow: column wrap;
+    transform: none;
+    opacity: 1;
+    color: #fff;
+    transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0;
+    contain: content;
+    grid-area: menu;
+    background-color: rgba(50, 50, 50, 0.925);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-sizing: border-box;
+    padding: 24px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    @media (--small) {
+      min-width: 400px;
+    }
+
+    & a {
+      text-decoration: none;
+      color: #ffffff80;
+      display: block;
+      padding: 16px 0;
+
+      &:hover {
+        color: #69f0ae;
+      }
+    }
+
+    & > * + * {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+// dashboard
+.dashboard {
+  width: 100%;
+  height: 100%;
+  margin: 12.5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr 1.5fr 1.5fr;
+  // grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  // grid-template-rows: 25vh 25vh 0 17.5vh 17.5vh 17.5vh 17.5vh;
+  grid-template-rows: 22.5vh 22.5vh 22.5vh 22.5vh 17.5vh 17.5vh 17.5vh 17.5vh;
+  grid-template-areas:
+    "devices-up devices-down traffic traffic traffic"
+    "links-up links-down perf-line perf-line perf-line"
+    "notification-table notification-table latency-line latency-line latency-line"
+    "notification-table notification-table loss-line loss-line loss-line"
+    "top-source-bar top-source-bar top-source-line top-source-line top-source-line"
+    "top-source-bar top-source-bar top-source-line top-source-line top-source-line"
+    "top-dest-bar top-dest-bar top-dest-line top-dest-line top-dest-line"
+    "top-dest-bar top-dest-bar top-dest-line top-dest-line top-dest-line";
+
+  .devices-up {
+    grid-area: devices-up;
+  }
+  .devices-down {
+    grid-area: devices-down;
+  }
+  .links-up {
+    grid-area: links-up;
+  }
+  .links-down {
+    grid-area: links-down;
+  }
+  .traffic {
+    grid-area: traffic;
+  }
+  .top-source-bar {
+    grid-area: top-source-bar;
+  }
+  .top-dest-bar {
+    grid-area: top-dest-bar;
+  }
+  .top-source-line {
+    grid-area: top-source-line;
+  }
+  .top-dest-line {
+    grid-area: top-dest-line;
+  }
+  .perf-line {
+    grid-area: perf-line;
+  }
+  .latency-line {
+    grid-area: latency-line;
+  }
+  .loss-line {
+    grid-area: loss-line;
+  }
+  .notification-table {
+    grid-area: notification-table;
+  }
+  > div {
+    width: calc(100% - 15px);
+    height: calc(100% - 15px);
+    background-color: #212124;
+    margin: 7.5px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .box-title {
+      font-weight: 600;
+      padding: 7.5px 5px;
+      text-align: center;
+      width: calc(100% - 10px);
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      background-color: darken($color-white, 82.5%);
+    }
+  }
+}
+
+// metric
+.metric {
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  min-height: 135px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
+  font-size: 0.9rem;
+  .main {
+    .value {
+      font-size: 2.25rem;
+    }
+  }
+}
+
+.line {
+  width: calc(100% - 40px);
+  height: calc(100% - 10px);
+  min-height: 175px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2.5px 0;
+}
+
+.bar {
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  min-height: 175px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0;
+}
+
+// React-table
+.ReactVirtualized__Table__row {
+  outline: none;
+  &:hover {
+    background-color: #fafafa;
+    color: #555;
+    cursor: pointer;
+  }
+}
+
+.ReactVirtualized__Grid.ReactVirtualized__Table__Grid {
+  outline: none;
+}
+
+// webhooks
+.individual-webhook {
+  .back-btn {
+    height: 35px;
+    padding: 0 15px;
+    border: none;
+    outline: none;
+    background-color: #3d3d3d;
+    color: #fafafa;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: #4d4d4d;
+    }
+  }
+  a {
+    color: #aaa;
+  }
+  div {
+    margin: 10px 0;
+  }
+  pre {
+    font-size: 13px;
+  }
+}

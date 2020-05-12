@@ -1,0 +1,25 @@
+version: '2.2'
+
+services:
+  create_config:
+    image: packaged_python
+    container_name: conf01
+    command: >
+      sh -c "
+        python3 create_ingest.py &&
+        cp /usr/src/create-ingest/additional_configs/* /usr/share/logstash/config
+      "
+    working_dir: /usr/src/create-ingest
+    volumes: 
+      - config:$TARGETFOLDER
+      - .:/usr/src/create-ingest
+    networks:
+      - elastic        
+
+volumes: 
+  config:
+    driver: local
+
+networks:
+  elastic:
+    driver: bridge

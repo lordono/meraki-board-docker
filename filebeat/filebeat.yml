@@ -1,0 +1,28 @@
+#=========================== Filebeat inputs =============================
+
+filebeat.inputs:
+
+# Each - is an input. Most options can be set at the input level, so
+# you can use different inputs for various configurations.
+# Below are the input specific configurations.
+
+- type: netflow
+  max_message_size: 10KiB
+  host: "0.0.0.0:2055"
+  protocols: [ v5, v9, ipfix ]
+  expiration_timeout: 30m
+  queue_size: 8192
+  detect_sequence_reset: true
+  processors:
+  - drop_fields:
+      fields:
+        - "fileset"
+        - "cloud"
+        - "host"
+        - "event"
+        - "flow"
+      ignore_missing: true
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: '${LS_HOSTS}'
