@@ -71,10 +71,12 @@ function App() {
 
       // get the data
       // get devices
-      setTimeout(async () => {
-        const returnData = await getDevice();
-        setDevices(returnData);
-      }, 0);
+      if (devices.length === 0) {
+        setTimeout(async () => {
+          const returnData = await getDevice();
+          setDevices(returnData);
+        }, 0);
+      }
 
       // get wan data
       setTimeout(async () => {
