@@ -192,7 +192,7 @@ Next you need to follow the set of instructions below to proceed.
 10) Repeat these steps for all the networks that you wish to monitor
 
 ### Configuring Netflow
-To configure Netflow, you will need the public IP address of your server.
+To configure Netflow, you will need the **public IP address** of your server.
 
 Next you will need to follow the set instructions below to proceed.
 1) We need to login to [Meraki Dashboard](https://n185.meraki.com)
