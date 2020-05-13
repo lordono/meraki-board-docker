@@ -87,7 +87,7 @@ sudo sysctl -w vm.max_map_count=262144
 Feel free to clone the repository and explore the files.
 ```bash
 git clone https://github.com/lordono/meraki-board-docker.git
-cd meraki-board
+cd meraki-board-docker
 ```
 
 ### Setting up environment variables
