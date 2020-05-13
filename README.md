@@ -172,31 +172,14 @@ You should see 8 containers created.
 - 1 Ngrok
 - 1 Meraki UI
 
-### Check the Ngrok URLs
-You will now need to check the Ngrok URLs in order to find out what to put into Meraki Settings later.
+### Configuring Webhook on Meraki Dashboard
+You will need to get the Meraki Webhook URL first.
 
-#### Get URL
-Get Meraki Webhook URL
 ```bash
 curl --noproxy "*" http://localhost:4040/api/tunnels | jq '.tunnels[].public_url'
 ```
 
-Get Meraki Netflow URL
-```bash
-curl --noproxy "*" http://localhost:4041/api/tunnels | jq '.tunnels[].public_url'
-```
-
-#### Put URL into respective settings in Meraki Dashboard
-For Netflow, 
-1) We need to login to [Meraki Dashboard](https://n185.meraki.com)
-2) Select the appropriate organization and network
-3) Go to Network-wide > General > Netflow
-4) Fill in the collector IP according to the URL given earlier
-5) Fill in the port as 443
-6) Save the settings
-7) Repeat these steps for all the networks that you wish to monitor
-
-For Webhook,
+Next you need to follow the set of instructions below to proceed.
 1) We need to login to [Meraki Dashboard](https://n185.meraki.com)
 2) Select the appropriate organization and network
 3) Go to Network-wide > Alerts
@@ -208,6 +191,17 @@ For Webhook,
 9) Save the settings
 10) Repeat these steps for all the networks that you wish to monitor
 
+### Configuring Netflow
+To configure Netflow, you will need the public IP address of your server.
+
+Next you will need to follow the set instructions below to proceed.
+1) We need to login to [Meraki Dashboard](https://n185.meraki.com)
+2) Select the appropriate organization and network
+3) Go to Network-wide > General > Netflow
+4) Fill in the collector IP according to the public IP address of your server
+5) Fill in the port as 2055
+6) Save the settings
+7) Repeat these steps for all the networks that you wish to monitor
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
