@@ -98,6 +98,14 @@ For each .env file, there is an existing .env.example file in the appropriate fo
 
 Eg. Under the root folder, you will see a .env.example. You will need to copy this file and fill in appropriate details to form a .env file.
 
+There are a total of **4 environment files** in this project. Below are the locations.
+- ./.env
+- ./ingest/.env
+- ./ui/.env
+- ./ngrok-env/webhook.env
+
+Follow the instructions in each of the .env.example and fill in those that has `<Change Required>` labelled on it.
+
 ### Create Logstash Configurations
 We need to get the configurations for Logstash ingestion. We will be using HTTP module in Logstash heavily. To this end, we have created some Python scripts that do that. More information can be found in the scripts themselves.
 
@@ -155,13 +163,13 @@ We will check that the containers are created via the following commands:
 ```bash
 sudo docker ps
 ```
-You should see 9 containers created.
+You should see 8 containers created.
 
 - 3 Elasticsearch
 - 1 Kibana
 - 1 Logstash
 - 1 Filebeat
-- 2 Ngrok
+- 1 Ngrok
 - 1 Meraki UI
 
 ### Check the Ngrok URLs
