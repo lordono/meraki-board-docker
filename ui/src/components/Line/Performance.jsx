@@ -10,7 +10,7 @@ const LinePerformance = ({ data = [], devices = [] }) => {
       // transform label - from serial to name
       if (devices.length > 0) {
         const transformedData = data.map((i) => {
-          const label = findNameForSerial(i.serial, devices);
+          const label = findNameForSerial(i.label, devices);
           return {
             label,
             data: i.data,

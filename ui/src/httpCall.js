@@ -251,7 +251,6 @@ export const getAlert = async (formatStart, formatEnd) => {
       headers: { "Content-Type": "application/json" },
     });
     const rjson = await response.json();
-    console.log(rjson.hits.hits);
     return rjson.hits.hits;
   } catch (error) {
     console.log(error);
@@ -284,6 +283,7 @@ export const getDevice = async () => {
   try {
     const baseUrl = process.env.REACT_APP_SERVER;
     const organization = process.env.REACT_APP_ORGANIZATION;
+    console.log(organization, baseUrl);
     const response = await fetch(
       `${baseUrl}/meraki/organizations/${organization}/devices`,
       {
@@ -294,6 +294,7 @@ export const getDevice = async () => {
       }
     );
     const rjson = await response.json();
+    console.log(rjson);
     return rjson;
   } catch (error) {
     console.log(error);
