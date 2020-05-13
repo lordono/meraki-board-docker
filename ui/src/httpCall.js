@@ -279,3 +279,24 @@ export const getNetwork = async () => {
     return [];
   }
 };
+
+export const getDevice = async () => {
+  try {
+    const baseUrl = process.env.REACT_APP_SERVER;
+    const organization = process.env.REACT_APP_ORGANIZATION;
+    const response = await fetch(
+      `${baseUrl}/meraki/organizations/${organization}/devices`,
+      {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const rjson = await response.json();
+    return rjson;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};

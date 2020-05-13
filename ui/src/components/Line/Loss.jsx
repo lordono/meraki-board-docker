@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from "react";
 import Line from "./Line";
+import { findNameForSerial } from "../../misc";
 
-const LineLoss = ({ data = [] }) => {
+const LineLoss = ({ data = [], devices = [] }) => {
   const [lineData, setLineData] = useState([]);
   const [label] = useState("Loss (%)");
   useEffect(() => {
     if (data) {
-      setLineData(data);
+      // transform label - from serial to name
+      if (devices.length > 0) {
+        const transformedData = data.map((i) => {
+          const label = findNameForSerial(i.serial, devices);
+          return {
+            label,
+            data: i.data,
+          };
+        });
+        setLineData(transformedData);
+      } else {
+        setLineData(data);
+      }
     }
-  }, [data]);
+  }, [data, devices]);
   return (
     <div className="line">
       <Line

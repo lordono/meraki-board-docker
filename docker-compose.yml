@@ -116,23 +116,10 @@ services:
 
   ngrok01:
     image: meraki-board/ngrok
-    depends_on: [ fib01 ]
+    depends_on: [ logs01 ]
     container_name: ngrok01
     ports:
       - 4040:4040
-    environment:
-      NGROK_PORT: http://fib01:2055
-    env_file:
-      - ./ngrok-env/netflow.env
-    networks:
-      - elastic
-
-  ngrok02:
-    image: meraki-board/ngrok
-    depends_on: [ logs01 ]
-    container_name: ngrok02
-    ports:
-      - 4041:4040
     environment:
       NGROK_PORT: http://logs01:62101
     env_file:
@@ -142,7 +129,7 @@ services:
 
   ui01:
     image: meraki-board/ui
-    depends_on: [ ngrok01, ngrok02 ]
+    depends_on: [ ngrok01, fib01 ]
     container_name: ui01
     ports:
       - 1337:80

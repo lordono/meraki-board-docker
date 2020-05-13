@@ -20,3 +20,24 @@ exports.org_network = async (req, res) => {
   const rjson = await response.json();
   return res.json(rjson);
 };
+
+/**
+ * Mimic Meraki URI for organization devices
+ */
+exports.org_devices = async (req, res) => {
+  const { organization } = req.params;
+  const baseUrl = process.env.MERAKI_URL;
+  const merakiKey = process.env.MERAKI_KEY;
+  const response = await fetch(
+    `${baseUrl}/organizations/${organization}/devices`,
+    {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Cisco-Meraki-API-Key": merakiKey,
+      },
+    }
+  );
+  const rjson = await response.json();
+  return res.json(rjson);
+};

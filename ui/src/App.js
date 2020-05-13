@@ -7,6 +7,7 @@ import {
   getLatency,
   getLoss,
   getAlert,
+  getDevice,
 } from "./httpCall";
 
 import Drawer from "./components/Drawer";
@@ -42,6 +43,7 @@ function App() {
     end: new Date(),
   });
 
+  const [devices, setDevices] = useState([]);
   const [srcBar, setSrcBar] = useState([]);
   const [dstBar, setDstBar] = useState([]);
   const [traffic, setTraffic] = useState([]);
@@ -68,6 +70,11 @@ function App() {
       const formatEnd = searchDate.end.toISOString().split(".")[0];
 
       // get the data
+      // get devices
+      setTimeout(async () => {
+        const returnData = await getDevice();
+        setDevices(returnData);
+      }, 0);
 
       // get wan data
       setTimeout(async () => {
@@ -166,19 +173,19 @@ function App() {
           </div>
           <div className="traffic">
             <div className="box-title">MX Traffic</div>
-            <LineTraffic data={traffic} />
+            <LineTraffic data={traffic} devices={devices} />
           </div>
           <div className="perf-line">
             <div className="box-title">Performance</div>
-            <LinePerformance data={perfLine} />
+            <LinePerformance data={perfLine} devices={devices} />
           </div>
           <div className="latency-line">
             <div className="box-title">Latency (ms)</div>
-            <LineLatency data={latencyLine} />
+            <LineLatency data={latencyLine} devices={devices} />
           </div>
           <div className="loss-line">
             <div className="box-title">Loss (%)</div>
-            <LineLoss data={lossLine} />
+            <LineLoss data={lossLine} devices={devices} />
           </div>
           <div className="notification-table">
             <div className="box-title">Notification Table</div>

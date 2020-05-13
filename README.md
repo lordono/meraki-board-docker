@@ -86,7 +86,7 @@ sudo sysctl -w vm.max_map_count=262144
 ### Clone this repository
 Feel free to clone the repository and explore the files.
 ```bash
-git clone https://github.com/jseow-c/meraki-board
+git clone https://github.com/lordono/meraki-board-docker.git
 cd meraki-board
 ```
 

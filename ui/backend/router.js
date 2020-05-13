@@ -11,4 +11,9 @@ router.get(
   controller.meraki_org_network
 );
 
+router.get(
+  "/meraki/organizations/:organization/devices",
+  controller.meraki_org_devices
+);
+
 module.exports = router;
