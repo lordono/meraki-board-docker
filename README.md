@@ -155,7 +155,7 @@ We will then bring up the stack. It is created using the file `docker-compose.ym
 
 ```bash
 cd ..
-sudo docker-compose up
+sudo docker-compose up -d
 ```
 
 We will check that the containers are created via the following commands:
