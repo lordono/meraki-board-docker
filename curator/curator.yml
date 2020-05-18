@@ -1,7 +1,7 @@
 client:
     hosts:
-      - 127.0.0.1
-    port: 9200
+      - ${ES_HOST}
+    port: ${ES_PORT}
     url_prefix:
     certificate:
     client_cert:

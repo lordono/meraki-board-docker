@@ -114,6 +114,19 @@ services:
     networks:
       - elastic
 
+  cur01:
+    image: meraki-board/curator
+    depends_on: {"es01": {"condition": "service_healthy"}}
+    container_name: cur01
+    volumes:
+      - ./curator/curator.yml:/home/curator/.curator/curator.yml
+      - ./curator/delete_old.yml:/home/curator/delete_old.yml
+    environment:
+      ES_HOST: http://es01
+      ES_PORT: 9200
+    networks:
+      - elastic
+
   ngrok01:
     image: meraki-board/ngrok
     depends_on: [ logs01 ]

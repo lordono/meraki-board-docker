@@ -10,6 +10,11 @@ RUN apk --no-cache add python py-setuptools py-pip gcc libffi py-cffi python-dev
     sed -i '/import sys/a import urllib3.contrib.pyopenssl' /usr/bin/curator && \
     sed -i '/import sys/a import urllib3' /usr/bin/curator
 
-USER nobody:nobody
+RUN set -x \
+ && adduser -h /home/curator -D -u 6738 curator
 
-ENTRYPOINT ["/usr/bin/curator"]
+USER curator
+
+COPY --chown=curator delete_old.yml /home/curator
+
+CMD [ "/usr/bin/curator", "/home/curator/delete_old.yml" ]

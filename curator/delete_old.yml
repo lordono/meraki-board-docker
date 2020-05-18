@@ -9,7 +9,7 @@
     actions:
       1:
         action: delete_indices
-        description: "Delete older indices beyond 4 days"
+        description: "Delete older indices beyond 1 hour"
         options:
           timeout_override: 300
           continue_if_exception: False
@@ -17,5 +17,5 @@
         - filtertype: age
           source: creation_date
           direction: older
-          unit: days # months/weeks/days/hours/minutes/seconds
-          unit_count: 4
+          unit: hours # months/weeks/days/hours/minutes/seconds
+          unit_count: 1
