@@ -1,14 +1,12 @@
-FROM alpine:3.6
+FROM debian:stretch-slim
 
-RUN apk --no-cache add python py-setuptools py-pip gcc libffi py-cffi python-dev libffi-dev py-openssl musl-dev linux-headers openssl-dev libssl1.0 && \
-    pip install elasticsearch-curator && \
-    pip install boto3 && \
-    pip install requests-aws4auth && \
-    pip install cryptography && \
-    apk del py-pip gcc python-dev libffi-dev musl-dev linux-headers openssl-dev && \
-    sed -i '/import sys/a urllib3.contrib.pyopenssl.inject_into_urllib3()' /usr/bin/curator && \
-    sed -i '/import sys/a import urllib3.contrib.pyopenssl' /usr/bin/curator && \
-    sed -i '/import sys/a import urllib3' /usr/bin/curator
+RUN set -x \
+    # Install curator (latest official stable from https://www.elastic.co/guide/en/elasticsearch/client/curator/current/apt-repository.html).
+ && apt-get update \
+ && apt-get install -y wget \
+ && wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add - \
+ && deb [arch=amd64] https://packages.elastic.co/curator/5/debian stable main \
+ && sudo apt-get update && sudo apt-get install elasticsearch-curator
 
 RUN set -x \
  && adduser -h /home/curator -D -u 6738 curator
