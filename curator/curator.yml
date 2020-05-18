@@ -1,19 +1,19 @@
 client:
-    hosts:
-      - ${ES_HOST}
-    port: ${ES_PORT}
-    url_prefix:
-    certificate:
-    client_cert:
-    client_key:
-    http_auth:
-    use_ssl: False
-    timeout: 30
-    master_only: False
-    ssl_no_validate: False
+  hosts:
+    - ${ES_HOST}
+  port: ${ES_PORT}
+  url_prefix:
+  certificate:
+  client_cert:
+  client_key:
+  http_auth:
+  use_ssl: False
+  timeout: 30
+  master_only: False
+  ssl_no_validate: False
   
-  logging:
-    loglevel: INFO
-    logfile:
-    logformat: default
-    blacklist: ['elasticsearch', 'urllib3']
+logging:
+  loglevel: INFO
+  logfile:
+  logformat: default
+  blacklist: ['elasticsearch', 'urllib3']

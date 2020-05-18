@@ -122,8 +122,14 @@ services:
       - ./curator/curator.yml:/home/curator/.curator/curator.yml
       - ./curator/delete_old.yml:/home/curator/delete_old.yml
     environment:
-      ES_HOST: http://es01
+      ES_HOST: http://es01 
       ES_PORT: 9200
+      DELETE_UNIT: days
+      DELETE_COUNT: 4
+      HTTP_PROXY: ""
+      HTTPS_PROXY: ""
+      http_proxy: ""
+      https_proxy: ""
     networks:
       - elastic
 
