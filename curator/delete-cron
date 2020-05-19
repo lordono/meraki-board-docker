@@ -1,2 +1,2 @@
-*/5 * * * * /usr/bin/curator --dry-run --config /home/curator/.curator/curator.yml /home/curator/delete_old.yml > /dev/stdout
+0 * * * * /usr/bin/curator --config /home/curator/.curator/curator.yml /home/curator/delete_old.yml >> /var/log/curator-delete.log
 # An empty line is required at the end of this file for a valid cron file.

@@ -36,6 +36,9 @@ COPY --chown=curator delete-cron /etc/cron.d/delete-cron
 # Give execution rights on the cron job
 RUN chmod 0644 /etc/cron.d/delete-cron
 
+# Create cron log
+RUN touch /var/log/curator-delete.log
+
 # Apply cron job
 RUN crontab /etc/cron.d/delete-cron
 
@@ -48,11 +51,12 @@ RUN chown curator:curator /var/run
 # Run Command
 #############################################################
 
-# USER curator
-
+# Copy in configuration and shell script for startup
 COPY --chown=curator delete_old.yml /home/curator
+COPY --chown=curator start-cron.sh /home/curator/start-cron.sh
+RUN chmod 0644 /etc/cron.d/delete-cron
 
-CMD [ "cron", "-f" ]
+CMD [ "sh", "/home/curator/start-cron.sh" ]
 	
 # CMD [ "tail", "-f",  "/dev/null" ]
 
